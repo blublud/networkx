@@ -2,6 +2,7 @@
 """One-mode (unipartite) projections of bipartite graphs.
 """
 import networkx as nx
+import math
 #    Copyright (C) 2011 by 
 #    Aric Hagberg <hagberg@lanl.gov>
 #    Dan Schult <dschult@colgate.edu>
@@ -15,7 +16,8 @@ __all__ = ['project',
            'weighted_projected_graph',
            'collaboration_weighted_projected_graph',
            'overlap_weighted_projected_graph',
-           'generic_weighted_projected_graph']
+           'generic_weighted_projected_graph',
+		   'adamic_projected_graph']
 
 def projected_graph(B, nodes, multigraph=False):
     r"""Returns the projection of B onto one of its node sets.
@@ -493,5 +495,12 @@ def generic_weighted_projected_graph(B, nodes, weight_function=None):
             G.add_edge(u,v,weight=weight)
     return G
 
+def adamic_projected_graph(B,nodes):
+	
+	def adamic_weight(B,u,v):
+		return sum([1.0/math.log(len(B[common_nbr])) for common_nbr in (set(B[u].keys()) & set(B[v].keys()))])
+		
+	return generic_weighted_projected_graph(B,nodes, weight_function=adamic_weight)
+	
 def project(B, nodes, create_using=None):
     return projected_graph(B, nodes)
