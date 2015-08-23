@@ -2,6 +2,7 @@
 Measure similarity from one node to others
 '''
 import networkx as nx
+import math
 
 __all__=['similarity_unweighted_projection', 'similarity_snp', 'similarity_katz','similarity_jaccard','similarity_adamic']
 
@@ -71,9 +72,11 @@ def similarity_unweighted_projection(bipart,from_node, to_nodes=None, sim_func=N
     
     sims={}
     
-    for v in set(nbrs2)&(set(to_nodes) if to_nodes else set([])):
+    to_nodes= set(to_nodes) if to_nodes else nbrs2
+    
+    for v in nbrs2 & to_nodes:
         sim = sim_func(B,u,v)
-        sims[v:sim]
+        sims[v]=sim
     
     return sims
 
