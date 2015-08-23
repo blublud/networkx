@@ -18,13 +18,11 @@ class TestPajek(object):
                                ('D2', 'Bb')])
 
         self.G.graph['name']='Tralala'
-        (self.fd,self.fname)=tempfile.mkstemp()
-        fh=open(self.fname,'wb')
-        fh.write(self.data.encode('UTF-8'))
-        fh.close()
+        (fd,self.fname)=tempfile.mkstemp()
+        with os.fdopen(fd, 'wb') as fh:
+            fh.write(self.data.encode('UTF-8'))
 
     def tearDown(self):
-        os.close(self.fd)
         os.unlink(self.fname)
 
     def test_parse_pajek_simple(self):
@@ -72,6 +70,6 @@ class TestPajek(object):
         nx.write_pajek(G,fh)
         fh.seek(0)
         H=nx.read_pajek(fh)
-        assert_nodes_equal(G.nodes(), H.nodes())
-        assert_edges_equal(G.edges(), H.edges())
-        assert_equal(G.graph,H.graph)
+        assert_nodes_equal(list(G), list(H))
+        assert_edges_equal(list(G.edges()), list(H.edges()))
+        assert_equal(G.graph, H.graph)

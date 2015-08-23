@@ -1,7 +1,7 @@
 """
 Adjacency matrix and incidence matrix of graphs.
 """
-#    Copyright (C) 2004-2013 by
+#    Copyright (C) 2004-2015 by
 #    Aric Hagberg <hagberg@lanl.gov>
 #    Dan Schult <dschult@colgate.edu>
 #    Pieter Swart <swart@lanl.gov>
@@ -70,12 +70,12 @@ def incidence_matrix(G, nodelist=None, edgelist=None,
     """
     import scipy.sparse
     if nodelist is None:
-        nodelist = G.nodes()
+        nodelist = list(G)
     if edgelist is None:
         if G.is_multigraph():
-            edgelist = G.edges(keys=True)
+            edgelist = list(G.edges(keys=True))
         else:
-            edgelist = G.edges()
+            edgelist = list(G.edges())
     A = scipy.sparse.lil_matrix((len(nodelist),len(edgelist)))
     node_index = dict( (node,i) for i,node in enumerate(nodelist) )
     for ei,e in enumerate(edgelist):
@@ -126,6 +126,8 @@ def adjacency_matrix(G, nodelist=None, weight='weight'):
 
     Notes
     -----
+    For directed graphs, entry i,j corresponds to an edge from i to j.
+    
     If you want a pure Python adjacency matrix representation try
     networkx.convert.to_dict_of_dicts which will return a
     dictionary-of-dictionaries format that can be addressed as a

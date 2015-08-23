@@ -46,7 +46,7 @@ def generate_pajek(G):
 
     # write nodes with attributes
     yield '*vertices %s'%(G.order())
-    nodes = G.nodes()
+    nodes = list(G)
     # make dictionary mapping nodes to integers
     nodenumber=dict(zip(nodes,range(1,len(nodes)+1)))
     for n in nodes:
@@ -162,7 +162,7 @@ def parse_pajek(lines):
             break
         if l.lower().startswith("*network"):
             try:
-                label, name = l.split()
+                label, name = l.split(None, 1)
             except ValueError:
                 # Line was not of the form:  *network NAME
                 pass

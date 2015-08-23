@@ -19,8 +19,8 @@ if sys.argv[-1] == 'setup.py':
     print("To install, run 'python setup.py install'")
     print()
 
-if sys.version_info[:2] < (2, 6):
-    print("NetworkX requires Python version 2.6 or later (%d.%d detected)." %
+if sys.version_info[:2] < (2, 7):
+    print("NetworkX requires Python 2.7 or later (%d.%d detected)." %
           sys.version_info[:2])
     sys.exit(-1)
 
@@ -39,6 +39,7 @@ packages=["networkx",
           "networkx.algorithms.community",
           "networkx.algorithms.components",
           "networkx.algorithms.connectivity",
+          "networkx.algorithms.coloring",
           "networkx.algorithms.flow",
           "networkx.algorithms.traversal",
           "networkx.algorithms.isomorphism",
@@ -90,6 +91,7 @@ package_data     = {
     'networkx.algorithms.community': ['tests/*.py'],
     'networkx.algorithms.components': ['tests/*.py'],
     'networkx.algorithms.connectivity': ['tests/*.py'],
+    'networkx.algorithms.coloring': ['tests/*.py'],
     'networkx.algorithms.flow': ['tests/*.py', 'tests/*.bz2'],
     'networkx.algorithms.traversal': ['tests/*.py'],
     'networkx.algorithms.isomorphism': ['tests/*.py','tests/*.*99'],

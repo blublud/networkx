@@ -4,11 +4,12 @@ Write a dot file from a networkx graph for further processing with graphviz.
 
 You need to have either pygraphviz or pydot for this example.
 
-See https://networkx.lanl.gov/drawing.html for more info.
+See http://networkx.github.io/documentation/latest/reference/drawing.html
+for more info.
 
 """
 __author__ = """Aric Hagberg (hagberg@lanl.gov)"""
-#    Copyright (C) 2004-2006 by 
+#    Copyright (C) 2004-2015 by 
 #    Aric Hagberg <hagberg@lanl.gov>
 #    Dan Schult <dschult@colgate.edu>
 #    Pieter Swart <swart@lanl.gov>
@@ -25,7 +26,7 @@ try:
 except:
     print()
     print("pygraphviz or pydot were not found ")
-    print("see https://networkx.lanl.gov/Drawing.html for info")
+    print("see http://networkx.github.io/documentation/latest/reference/drawing.html for info")
     print()
     raise
 

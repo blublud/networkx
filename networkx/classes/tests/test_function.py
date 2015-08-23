@@ -16,52 +16,51 @@ class TestFunction(object):
         self.DGedges=[(0,1),(0,2),(0,3),(1,0),(1,1),(1,2)]
 
     def test_nodes(self):
-        assert_equal(self.G.nodes(),nx.nodes(self.G))
-        assert_equal(self.DG.nodes(),nx.nodes(self.DG))
+        assert_equal(list(self.G.nodes()),list(nx.nodes(self.G)))
+        assert_equal(list(self.DG.nodes()),list(nx.nodes(self.DG)))
+
     def test_edges(self):
-        assert_equal(self.G.edges(),nx.edges(self.G))
-        assert_equal(self.DG.edges(),nx.edges(self.DG))
-        assert_equal(self.G.edges(nbunch=[0,1,3]),nx.edges(self.G,nbunch=[0,1,3]))
-        assert_equal(self.DG.edges(nbunch=[0,1,3]),nx.edges(self.DG,nbunch=[0,1,3]))
-    def test_nodes_iter(self):
-        assert_equal(list(self.G.nodes_iter()),list(nx.nodes_iter(self.G)))
-        assert_equal(list(self.DG.nodes_iter()),list(nx.nodes_iter(self.DG)))
-    def test_edges_iter(self):
-        assert_equal(list(self.G.edges_iter()),list(nx.edges_iter(self.G)))
-        assert_equal(list(self.DG.edges_iter()),list(nx.edges_iter(self.DG)))
-        assert_equal(list(self.G.edges_iter(nbunch=[0,1,3])),list(nx.edges_iter(self.G,nbunch=[0,1,3])))
-        assert_equal(list(self.DG.edges_iter(nbunch=[0,1,3])),list(nx.edges_iter(self.DG,nbunch=[0,1,3])))
+        assert_equal(list(self.G.edges()),list(nx.edges(self.G)))
+        assert_equal(list(self.DG.edges()),list(nx.edges(self.DG)))
+        assert_equal(list(self.G.edges(nbunch=[0,1,3])),list(nx.edges(self.G,nbunch=[0,1,3])))
+        assert_equal(list(self.DG.edges(nbunch=[0,1,3])),list(nx.edges(self.DG,nbunch=[0,1,3])))
+
     def test_degree(self):
-        assert_equal(self.G.degree(),nx.degree(self.G))
-        assert_equal(self.DG.degree(),nx.degree(self.DG))
-        assert_equal(self.G.degree(nbunch=[0,1]),nx.degree(self.G,nbunch=[0,1]))
-        assert_equal(self.DG.degree(nbunch=[0,1]),nx.degree(self.DG,nbunch=[0,1]))
-        assert_equal(self.G.degree(weight='weight'),nx.degree(self.G,weight='weight'))
-        assert_equal(self.DG.degree(weight='weight'),nx.degree(self.DG,weight='weight'))
+        assert_equal(list(self.G.degree()), list(nx.degree(self.G)))
+        assert_equal(list(self.DG.degree()), list(nx.degree(self.DG)))
+        assert_equal(list(self.G.degree(nbunch=[0, 1])), list(nx.degree(self.G, nbunch=[0, 1])))
+        assert_equal(list(self.DG.degree(nbunch=[0, 1])), list(nx.degree(self.DG, nbunch=[0, 1])))
+        assert_equal(list(self.G.degree(weight='weight')), list(nx.degree(self.G, weight='weight')))
+        assert_equal(list(self.DG.degree(weight='weight')), list(nx.degree(self.DG, weight='weight')))
+
     def test_neighbors(self):
         assert_equal(self.G.neighbors(1),nx.neighbors(self.G,1))
         assert_equal(self.DG.neighbors(1),nx.neighbors(self.DG,1))
+
     def test_number_of_nodes(self):
         assert_equal(self.G.number_of_nodes(),nx.number_of_nodes(self.G))
         assert_equal(self.DG.number_of_nodes(),nx.number_of_nodes(self.DG))
+
     def test_number_of_edges(self):
         assert_equal(self.G.number_of_edges(),nx.number_of_edges(self.G))
         assert_equal(self.DG.number_of_edges(),nx.number_of_edges(self.DG))
+
     def test_is_directed(self):
         assert_equal(self.G.is_directed(),nx.is_directed(self.G))
         assert_equal(self.DG.is_directed(),nx.is_directed(self.DG))
+
     def test_subgraph(self):
         assert_equal(self.G.subgraph([0,1,2,4]).adj,nx.subgraph(self.G,[0,1,2,4]).adj)
         assert_equal(self.DG.subgraph([0,1,2,4]).adj,nx.subgraph(self.DG,[0,1,2,4]).adj)
 
     def test_create_empty_copy(self):
         G=nx.create_empty_copy(self.G, with_nodes=False)
-        assert_equal(G.nodes(),[])
+        assert_equal(list(G), [])
         assert_equal(G.graph,{})
         assert_equal(G.node,{})
         assert_equal(G.edge,{})
         G=nx.create_empty_copy(self.G)
-        assert_equal(G.nodes(),self.G.nodes())
+        assert_equal(list(G), list(self.G))
         assert_equal(G.graph,{})
         assert_equal(G.node,{}.fromkeys(self.G.nodes(),{}))
         assert_equal(G.edge,{}.fromkeys(self.G.nodes(),{}))
@@ -142,13 +141,13 @@ class TestFunction(object):
 
     def test_neighbors(self):
         graph = nx.complete_graph(100)
-        pop = random.sample(graph.nodes(), 1)
+        pop = random.sample(list(graph), 1)
         nbors = list(nx.neighbors(graph, pop[0]))
         # should be all the other vertices in the graph
         assert_equal(len(nbors), len(graph) - 1)
 
         graph = nx.path_graph(100)
-        node = random.sample(graph.nodes(), 1)[0]
+        node = random.sample(list(graph), 1)[0]
         nbors = list(nx.neighbors(graph, node))
         # should be all the other vertices in the graph
         if node != 0 and node != 99:
@@ -163,13 +162,13 @@ class TestFunction(object):
 
     def test_non_neighbors(self):
         graph = nx.complete_graph(100)
-        pop = random.sample(graph.nodes(), 1)
+        pop = random.sample(list(graph), 1)
         nbors = list(nx.non_neighbors(graph, pop[0]))
         # should be all the other vertices in the graph
         assert_equal(len(nbors), 0)
 
         graph = nx.path_graph(100)
-        node = random.sample(graph.nodes(), 1)[0]
+        node = random.sample(list(graph), 1)[0]
         nbors = list(nx.non_neighbors(graph, node))
         # should be all the other vertices in the graph
         if node != 0 and node != 99:
@@ -213,6 +212,61 @@ class TestFunction(object):
         nedges = list(nx.non_edges(graph))
         for e in expected:
             assert_true(e in nedges)
+
+    def test_is_weighted(self):
+        G = nx.Graph()
+        assert_false(nx.is_weighted(G))
+
+        G = nx.path_graph(4)
+        assert_false(nx.is_weighted(G))
+        assert_false(nx.is_weighted(G, (2, 3)))
+
+        G.add_node(4)
+        G.add_edge(3, 4, weight=4)
+        assert_false(nx.is_weighted(G))
+        assert_true(nx.is_weighted(G, (3, 4)))
+
+        G = nx.DiGraph()
+        G.add_weighted_edges_from([('0', '3', 3), ('0', '1', -5), ('1', '0', -5),
+                                     ('0', '2', 2), ('1', '2', 4),
+                                     ('2', '3', 1)])
+        assert_true(nx.is_weighted(G))
+        assert_true(nx.is_weighted(G, ('1', '0')))
+
+        G = G.to_undirected()
+        assert_true(nx.is_weighted(G))
+        assert_true(nx.is_weighted(G, ('1', '0')))
+
+        assert_raises(nx.NetworkXError, nx.is_weighted, G, (1, 2))
+
+    def test_is_negatively_weighted(self):
+        G = nx.Graph()
+        assert_false(nx.is_negatively_weighted(G))
+
+        G.add_node(1)
+        G.add_nodes_from([2, 3, 4, 5])
+        assert_false(nx.is_negatively_weighted(G))
+
+        G.add_edge(1, 2, weight=4)
+        assert_false(nx.is_negatively_weighted(G, (1, 2)))
+
+        G.add_edges_from([(1, 3), (2, 4), (2, 6)])
+        G[1][3]['color'] = 'blue'
+        assert_false(nx.is_negatively_weighted(G))
+        assert_false(nx.is_negatively_weighted(G, (1, 3)))
+
+        G[2][4]['weight'] = -2
+        assert_true(nx.is_negatively_weighted(G, (2, 4)))
+        assert_true(nx.is_negatively_weighted(G))
+
+        G = nx.DiGraph()
+        G.add_weighted_edges_from([('0', '3', 3), ('0', '1', -5), ('1', '0', -2),
+                                   ('0', '2', 2), ('1', '2', -3), ('2', '3', 1)])
+        assert_true(nx.is_negatively_weighted(G))
+        assert_false(nx.is_negatively_weighted(G, ('0', '3')))
+        assert_true(nx.is_negatively_weighted(G, ('1', '0')))
+
+        assert_raises(nx.NetworkXError, nx.is_negatively_weighted, G, (1, 4))
 
 
 class TestCommonNeighbors():
@@ -349,3 +403,12 @@ def test_get_edge_attributes():
             keys = [(0,1), (1,2)]
         for key in keys:
             assert_equal(attrs[key], 100)
+
+def test_is_empty():
+    graphs = [nx.Graph(), nx.DiGraph(), nx.MultiGraph(), nx.MultiDiGraph()]
+    for G in graphs:
+        assert_true(nx.is_empty(G))
+        G.add_nodes_from(range(5))
+        assert_true(nx.is_empty(G))
+        G.add_edges_from([(1, 2), (3, 4)])
+        assert_false(nx.is_empty(G))

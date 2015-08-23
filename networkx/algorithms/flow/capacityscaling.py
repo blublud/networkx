@@ -13,8 +13,10 @@ __all__ = ['capacity_scaling']
 from itertools import chain
 from math import log
 import networkx as nx
-from networkx.utils import *
-
+from ...utils import BinaryHeap
+from ...utils import generate_unique_node
+from ...utils import not_implemented_for
+from ...utils import arbitrary_element
 
 def _detect_unboundedness(R):
     """Detect infinite-capacity negative cycles.
@@ -65,10 +67,10 @@ def _build_residual_network(G, demand, capacity, weight):
     # Extract edges with positive capacities. Self loops excluded.
     if G.is_multigraph():
         edge_list = [(u, v, k, e)
-                     for u, v, k, e in G.edges_iter(data=True, keys=True)
+                     for u, v, k, e in G.edges(data=True, keys=True)
                      if u != v and e.get(capacity, inf) > 0]
     else:
-        edge_list = [(u, v, 0, e) for u, v, e in G.edges_iter(data=True)
+        edge_list = [(u, v, 0, e) for u, v, e in G.edges(data=True)
                      if u != v and e.get(capacity, inf) > 0]
     # Simulate infinity with the larger of the sum of absolute node imbalances
     # the sum of finite edge capacities or any positive value if both sums are
@@ -268,7 +270,7 @@ def capacity_scaling(G, demand='demand', capacity='capacity', weight='weight',
 
     # Determine the maxmimum edge capacity.
     wmax = max(chain([-inf],
-                     (e['capacity'] for u, v, e in R.edges_iter(data=True))))
+                     (e['capacity'] for u, v, e in R.edges(data=True))))
     if wmax == -inf:
         # Residual network has no edges.
         return flow_cost, _build_flow_dict(G, R, capacity, weight)
@@ -308,7 +310,7 @@ def capacity_scaling(G, demand='demand', capacity='capacity', weight='weight',
         # Repeatedly augment flow from S to T along shortest paths until
         # Δ-feasibility is achieved.
         while S and T:
-            s = next(iter(S))
+            s = arbitrary_element(S)
             t = None
             # Search for a shortest path in terms of reduce costs from s to
             # any t in T in the Δ-residual network.
@@ -344,27 +346,31 @@ def capacity_scaling(G, demand='demand', capacity='capacity', weight='weight',
                     d_v = d_u + wmin - p_u + R_node[v]['potential']
                     if h_insert(v, d_v):
                         pred[v] = (u, kmin, emin)
-            if t is None:
+            if t is not None:
+                # Augment Δ units of flow from s to t.
+                while u != s:
+                    v = u
+                    u, k, e = pred[v]
+                    e['flow'] += delta
+                    R_succ[v][u][(k[0], not k[1])]['flow'] -= delta
+                # Account node excess and deficit.
+                R_node[s]['excess'] -= delta
+                R_node[t]['excess'] += delta
+                if R_node[s]['excess'] < delta:
+                    S_remove(s)
+                if R_node[t]['excess'] > -delta:
+                    T_remove(t)
+                # Update node potentials.
+                d_t = d[t]
+                for u, d_u in d.items():
+                    R_node[u]['potential'] -= d_u - d_t
+            else:
                 # Path not found.
-                raise nx.NetworkXUnfeasible('No flow satisfying all demands.')
-            # Augment Δ units of flow from s to t.
-            while u != s:
-                v = u
-                u, k, e = pred[v]
-                e['flow'] += delta
-                R_succ[v][u][(k[0], not k[1])]['flow'] -= delta
-            # Account node excess and deficit.
-            R_node[s]['excess'] -= delta
-            R_node[t]['excess'] += delta
-            if R_node[s]['excess'] < delta:
                 S_remove(s)
-            if R_node[t]['excess'] > -delta:
-                T_remove(t)
-            # Update node potentials.
-            d_t = d[t]
-            for u, d_u in d.items():
-                R_node[u]['potential'] -= d_u - d_t
         delta //= 2
+
+    if any(R.node[u]['excess'] != 0 for u in R):
+        raise nx.NetworkXUnfeasible('No flow satisfying all demands.')
 
     # Calculate the flow cost.
     for u in R:

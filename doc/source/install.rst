@@ -33,7 +33,7 @@ Installing from source
 
 You can install from source by downloading a source archive file
 (tar.gz or zip) or by checking out the source files from the
-Mercurial source code repository.
+Git source code repository.
 
 NetworkX is a pure Python package; you don't need a compiler to build
 or install it.
@@ -59,6 +59,7 @@ GitHub
 ------
 
   1. Clone the networkx repostitory
+    ::
 
        git clone https://github.com/networkx/networkx.git
 
@@ -105,7 +106,7 @@ Requirements
 Python
 ------
 
-To use NetworkX you need Python 2.6, 2.7, 3.2 or later.
+To use NetworkX you need Python 2.7, 3.2 or later.
 
 The easiest way to get Python and most optional packages is to install
 the Enthought Python distribution "`Canopy <https://www.enthought.com/products/canopy/>`_".
@@ -146,7 +147,7 @@ GraphViz
 
 In conjunction with either
 
-      - PyGraphviz:  http://networkx.lanl.gov/pygraphviz/
+      - PyGraphviz:  http://pygraphviz.github.io/
 
       or
 
@@ -155,13 +156,6 @@ In conjunction with either
 provides graph drawing and graph layout algorithms.
 
   - Download: http://graphviz.org/
-
-Pyparsing
----------
-
-http://pyparsing.wikispaces.com/
-
-Required for pydot, GML file reading.
 
 PyYAML
 ------

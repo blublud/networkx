@@ -8,7 +8,7 @@ from nose.tools import *
 from nose import SkipTest
 from nose.plugins.attrib import attr
 import networkx as nx
-import networkx.generators.threshold as nxt
+import networkx.algorithms.threshold as nxt
 from networkx.algorithms.isomorphism.isomorph import graph_could_be_isomorphic
 
 cnlti = nx.convert_node_labels_to_integers
@@ -18,11 +18,11 @@ class TestGeneratorThreshold():
     def test_threshold_sequence_graph_test(self):
         G=nx.star_graph(10)
         assert_true(nxt.is_threshold_graph(G))
-        assert_true(nxt.is_threshold_sequence(list(G.degree().values())))
+        assert_true(nxt.is_threshold_sequence(list(d for n, d in G.degree())))
 
         G=nx.complete_graph(10)
         assert_true(nxt.is_threshold_graph(G))
-        assert_true(nxt.is_threshold_sequence(list(G.degree().values())))
+        assert_true(nxt.is_threshold_sequence(list(d for n, d in G.degree())))
 
         deg=[3,2,2,1,1,1]
         assert_false(nxt.is_threshold_sequence(deg))
@@ -51,7 +51,7 @@ class TestGeneratorThreshold():
         assert_true(graph_could_be_isomorphic(H0,G))
         assert_true(graph_could_be_isomorphic(H0,H1))
         assert_true(graph_could_be_isomorphic(H0,H2))
-        
+
     def test_shortest_path(self):
         deg=[3,2,2,1]
         G=nx.generators.havel_hakimi_graph(deg)
@@ -77,7 +77,7 @@ class TestGeneratorThreshold():
         wseq=nxt.creation_sequence_to_weights(cs)
         cs2=nxt.weights_to_creation_sequence(wseq)
         assert_equal(cs, cs2)
-        
+
         wseq=nxt.creation_sequence_to_weights(nxt.uncompact([3,1,2,3,3,2,3]))
         assert_equal(wseq,
                      [s*0.125 for s in [4,4,4,3,5,5,2,2,2,6,6,6,1,1,7,7,7]])
@@ -114,7 +114,7 @@ class TestGeneratorThreshold():
         assert_true(nxt.is_threshold_graph(TG))
         assert_equal(sorted(TG.nodes()), [1, 2, 3, 4, 5, 7])
 
-        cs=nxt.creation_sequence(TG.degree(),with_labels=True)
+        cs=nxt.creation_sequence(dict(TG.degree()), with_labels=True)
         assert_equal(nxt.find_creation_sequence(G), cs)
 
     def test_fast_versions_properties_threshold_graphs(self):
@@ -122,7 +122,7 @@ class TestGeneratorThreshold():
         G=nxt.threshold_graph(cs)
         assert_equal(nxt.density('ddiiddid'), nx.density(G))
         assert_equal(sorted(nxt.degree_sequence(cs)),
-                     sorted(G.degree().values()))
+                     sorted(d for n, d in G.degree()))
 
         ts=nxt.triangle_sequence(cs)
         assert_equal(ts, list(nx.triangles(G).values()))
@@ -151,7 +151,7 @@ class TestGeneratorThreshold():
         s=nxt.right_d_threshold_sequence(5,7)
         s1=nxt.swap_d(s,1.0,1.0)
 
-        
+
     @attr('numpy')
     def test_eigenvectors(self):
         try:
@@ -180,5 +180,5 @@ class TestGeneratorThreshold():
         assert_raises(nx.exception.NetworkXError,
                       nxt.threshold_graph, cs, create_using=nx.DiGraph())
         MG=nxt.threshold_graph(cs,create_using=nx.MultiGraph())
-        assert_equal(MG.edges(), G.edges())
+        assert_equal(sorted(MG.edges()), sorted(G.edges()))
 
