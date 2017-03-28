@@ -35,6 +35,8 @@ from networkx.algorithms.swap import *
 from networkx.algorithms.graphical import *
 from networkx.algorithms.simple_paths import *
 
+
+
 import networkx.algorithms.assortativity
 import networkx.algorithms.bipartite
 import networkx.algorithms.centrality
@@ -51,6 +53,7 @@ import networkx.algorithms.traversal
 import networkx.algorithms.chordal
 import networkx.algorithms.operators
 import networkx.algorithms.tree
+
 
 # bipartite
 from networkx.algorithms.bipartite import (projected_graph, project, is_bipartite,
@@ -73,3 +76,6 @@ from .tree.branchings import (
 	maximum_branching, minimum_branching,
 	maximum_spanning_arborescence, minimum_spanning_arborescence
 )
+
+from networkx.algorithms.kernels import *
+import networkx.algorithms.kernels

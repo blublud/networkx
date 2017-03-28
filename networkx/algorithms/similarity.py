@@ -94,3 +94,4 @@ def similarity_adamic(bipart, from_node, to_nodes=None):
         return sum([1.0/math.log(len(B[common_nbr])) for common_nbr in (set(B[u].keys()) & set(B[v].keys()))])
     
     return similarity_unweighted_projection(bipart,from_node,to_nodes,sim_func=adamic_sim_func)
+

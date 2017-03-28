@@ -40,27 +40,27 @@ if sys.version_info[:2] < (2, 7):
 del sys
 
 # Release data
-from networkx import release
+# from networkx import release
 
-__author__ = '%s <%s>\n%s <%s>\n%s <%s>' % \
-    (release.authors['Hagberg'] + release.authors['Schult'] +
-        release.authors['Swart'])
-__license__ = release.license
+# __author__ = '%s <%s>\n%s <%s>\n%s <%s>' % \
+#     (release.authors['Hagberg'] + release.authors['Schult'] +
+#         release.authors['Swart'])
+# __license__ = release.license
 
-__date__ = release.date
-__version__ = release.version
+# __date__ = release.date
+# __version__ = release.version
 
-__bibtex__ = """@inproceedings{hagberg-2008-exploring,
-author = {Aric A. Hagberg and Daniel A. Schult and Pieter J. Swart},
-title = {Exploring network structure, dynamics, and function using {NetworkX}},
-year = {2008},
-month = Aug,
-urlpdf = {http://math.lanl.gov/~hagberg/Papers/hagberg-2008-exploring.pdf},
-booktitle = {Proceedings of the 7th Python in Science Conference (SciPy2008)},
-editors = {G\"{a}el Varoquaux, Travis Vaught, and Jarrod Millman},
-address = {Pasadena, CA USA},
-pages = {11--15}
-}"""
+# __bibtex__ = """@inproceedings{hagberg-2008-exploring,
+# author = {Aric A. Hagberg and Daniel A. Schult and Pieter J. Swart},
+# title = {Exploring network structure, dynamics, and function using {NetworkX}},
+# year = {2008},
+# month = Aug,
+# urlpdf = {http://math.lanl.gov/~hagberg/Papers/hagberg-2008-exploring.pdf},
+# booktitle = {Proceedings of the 7th Python in Science Conference (SciPy2008)},
+# editors = {G\"{a}el Varoquaux, Travis Vaught, and Jarrod Millman},
+# address = {Pasadena, CA USA},
+# pages = {11--15}
+# }"""
 
 # These are import orderwise
 from networkx.exception import *
